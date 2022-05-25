@@ -1,5 +1,5 @@
 import os
-from time import time
+import time
 from urllib import response
 import requests
 from dotenv import load_dotenv
