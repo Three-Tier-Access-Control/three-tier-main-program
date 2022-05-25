@@ -3,7 +3,7 @@ import time
 from urllib import response
 import requests
 from dotenv import load_dotenv
-from requests.exceptions import HTTPError
+from requests.exceptions import HTTPError, Timeout
 
 
 load_dotenv()
@@ -19,14 +19,16 @@ current_employee = {}
 def open_door(number: int):
     try:
         door_on = requests.post(
-            f'{BASE_URL_HARDWARE}/turn-on', json={'number': number})
+            f'{BASE_URL_HARDWARE}/turn-on', json={'number': number}, timeout=30)
         print("Door open!!!")
         time.sleep(5)
         door_off = requests.post(
-            f'{BASE_URL_HARDWARE}/turn-off', json={'number': number})
+            f'{BASE_URL_HARDWARE}/turn-off', json={'number': number}, timeout=30)
         print("Door closed.")
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
+    except Timeout:
+        print('The request timed out')
     except Exception as err:
         print(f'Other error occurred: {err}')
 
@@ -35,13 +37,13 @@ def open_door(number: int):
 
 
 def get_fingerprint():
-    fingerprint_response = requests.get('/read-fingerprint')
+    fingerprint_response = requests.get('/read-fingerprint', timeout=30)
 
     if fingerprint_response.status_code == 200:
         # match found
         # check to see who's finger it is
 
-        employee_response = requests.get('/fingerprints/find/{id}')
+        employee_response = requests.get('/fingerprints/find/{id}', timeout=30)
         current_employee = employee_response.data.employee
 
         # if error:
@@ -57,7 +59,8 @@ def get_fingerprint():
 
 def read_rfid_card():
     try:
-        rfid_response = requests.get(f'{BASE_URL_HARDWARE}/read-rfid-card')
+        rfid_response = requests.get(
+            f'{BASE_URL_HARDWARE}/read-rfid-card', timeout=30)
         json_rfid_response = rfid_response.json()
         # check to see who's rfid card it is
         uid = json_rfid_response['data']['uid']
@@ -79,6 +82,8 @@ def read_rfid_card():
 
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
+    except Timeout:
+        print('The request timed out')
     except Exception as err:
         print(f'Other error occurred: {err}')
 
