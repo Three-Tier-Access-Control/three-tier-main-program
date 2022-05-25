@@ -19,11 +19,11 @@ current_employee = {}
 def open_door(number: int):
     try:
         door_on = requests.post(
-            f'{BASE_URL_HARDWARE}/turn-on', data={'number': number})
+            f'{BASE_URL_HARDWARE}/turn-on', json={'number': number})
         print("Door open!!!")
         time.sleep(5)
         door_off = requests.post(
-            f'{BASE_URL_HARDWARE}/turn-off', data={'number': number})
+            f'{BASE_URL_HARDWARE}/turn-off', json={'number': number})
         print("Door closed.")
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
