@@ -31,7 +31,6 @@ def open_door(number: int):
         print(f'Other error occurred: {err}')
 
 
-
 # read fingerprint
 
 
@@ -84,14 +83,13 @@ def read_rfid_card():
         print(f'Other error occurred: {err}')
 
 
-
 def main():
-    while True:
-        read_rfid_card()
+    # while True:
+    read_rfid_card()
 
-        # get_fingerprint()
+    # get_fingerprint()
 
-        # detect and capture face
+    # detect and capture face
 
 
 if __name__ == "__main__":
