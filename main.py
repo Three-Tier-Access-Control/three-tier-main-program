@@ -40,8 +40,8 @@ def read_rfid_card():
         rfid_response = requests.get(f'{BASE_URL_HARDWARE}/read-rfid-card')
         json_rfid_response = rfid_response.json()
         # check to see who's rfid card it is
-        uid = json_rfid_response['uid']
-        text = json_rfid_response['text']
+        uid = json_rfid_response['data']['uid']
+        text = json_rfid_response['data']['text']
 
         print(f"Got {text} from card with id {uid}")
 
