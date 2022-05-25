@@ -1,5 +1,15 @@
+import os
+from urllib import response
 import requests
+from dotenv import load_dotenv
+from requests.exceptions import HTTPError
 
+
+load_dotenv()
+
+
+BASE_URL_HARDWARE = os.getenv('BASE_URL_HARDWARE')
+BASE_URL_MAIN = os.getenv('BASE_URL_MAIN')
 
 current_employee = {}
 
@@ -7,9 +17,9 @@ current_employee = {}
 
 
 def get_fingerprint():
-    finger_print_response = requests.get('/read-fingerprint')
+    fingerprint_response = requests.get('/read-fingerprint')
 
-    if finger_print_response.status == 200:
+    if fingerprint_response.status_code == 200:
         # match found
         # check to see who's finger it is
 
@@ -26,26 +36,41 @@ def get_fingerprint():
 
 
 def read_rfid_card():
-    rfid_response = requests.get('/read-rfid-card')
-    if rfid_response.status == 200:
+    try:
+        rfid_response = requests.get(f'{BASE_URL_HARDWARE}/read-rfid-card')
+        json_rfid_response = rfid_response.json()
         # check to see who's rfid card it is
+        uid = json_rfid_response['uid']
+        text = json_rfid_response['text']
 
-        employee_response = requests.get('/badges/find/{id}')
-        current_employee = employee_response.data.employee
+        print(f"Got {text} from card with id {uid}")
 
-        # if error:
-        # return False
-        #
-    else:
-        # not found or error
-        # retry 
-        pass
+        # employee_response = requests.get(
+        #     f'{BASE_URL_MAIN}/badges/find/{id}')
+
+        # json_employee_response = employee_response.json()
+        # current_employee = json_employee_response['data']['employee']
+
+        # print(current_employee)
+
+
+        # if authenticated:
+        print("successfully authenticated user")
+
+    except HTTPError as http_err:
+        print(f'HTTP error occurred: {http_err}')
+    except Exception as err:
+        print(f'Other error occurred: {err}')
 
 
 def main():
     while True:
-        get_fingerprint()
-
         read_rfid_card()
 
+        # get_fingerprint()
+
         # detect and capture face
+
+
+if __name__ == "__main__":
+    main()
