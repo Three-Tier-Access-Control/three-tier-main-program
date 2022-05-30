@@ -19,11 +19,11 @@ current_employee = {}
 def open_door(number: int):
     try:
         door_on = requests.post(
-            f'{BASE_URL_HARDWARE}/turn-on', json={'number': number}, timeout=30)
+            f'{BASE_URL_HARDWARE}/turn-on', json={'number': number})
         print("Door open!!!")
         time.sleep(5)
         door_off = requests.post(
-            f'{BASE_URL_HARDWARE}/turn-off', json={'number': number}, timeout=30)
+            f'{BASE_URL_HARDWARE}/turn-off', json={'number': number})
         print("Door closed.")
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -37,22 +37,36 @@ def open_door(number: int):
 
 
 def get_fingerprint():
-    fingerprint_response = requests.get('/read-fingerprint', timeout=30)
+    try:
 
-    if fingerprint_response.status_code == 200:
-        # match found
-        # check to see who's finger it is
+        fingerprint_response = requests.get(f'{BASE_URL_HARDWARE}/read-fingerprint')
 
-        employee_response = requests.get('/fingerprints/find/{id}', timeout=30)
-        current_employee = employee_response.data.employee
+        if fingerprint_response.status_code == 200:
+            json_fingerprint_response = fingerprint_response.json()
+            finger = json_fingerprint_response['data']['finger']
+            confidence = json_fingerprint_response['data']['confidence']
+            msg = json_fingerprint_response['data']['msg']
 
-        # if error:
-        # return False
-        #
-    else:
-        # not found or error
-        # retry
-        pass
+
+            # match found
+            # check to see who's finger it is
+
+            employee_response = requests.get(f'{BASE_URL_MAIN}/fingerprints/find/{finger}')
+            json_employee_response = employee_response.json()
+
+            current_employee = json_employee_response['data']['employee']
+
+            print(current_employee)
+
+            print("successfully authenticated user")
+            open_door(16)
+            
+    except HTTPError as http_err:
+        print(f'HTTP error occurred: {http_err}')
+    except Timeout:
+        print('The request timed out')
+    except Exception as err:
+        print(f'Other error occurred: {err}')
 
 # read rfid card
 
@@ -60,7 +74,7 @@ def get_fingerprint():
 def read_rfid_card():
     try:
         rfid_response = requests.get(
-            f'{BASE_URL_HARDWARE}/read-rfid-card', timeout=30)
+            f'{BASE_URL_HARDWARE}/read-rfid-card')
         json_rfid_response = rfid_response.json()
         # check to see who's rfid card it is
         uid = json_rfid_response['data']['uid']
@@ -90,9 +104,9 @@ def read_rfid_card():
 
 def main():
     # while True:
-    read_rfid_card()
+    # read_rfid_card()
 
-    # get_fingerprint()
+    get_fingerprint()
 
     # detect and capture face
 
