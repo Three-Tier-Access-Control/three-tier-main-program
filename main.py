@@ -51,16 +51,16 @@ def get_fingerprint():
             # match found
             # check to see who's finger it is
 
-            employee_response = requests.get(f'{BASE_URL_MAIN}/fingerprints/find/{finger}')
-            json_employee_response = employee_response.json()
+            # employee_response = requests.get(f'{BASE_URL_MAIN}/fingerprints/find/{finger}')
+            # json_employee_response = employee_response.json()
 
-            current_employee = json_employee_response['data']['employee']
+            # current_employee = json_employee_response['data']['employee']
 
-            print(current_employee)
+            # print(current_employee)
 
             print("successfully authenticated user")
             open_door(16)
-            
+
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
     except Timeout:
