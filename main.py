@@ -38,7 +38,6 @@ def open_door(number: int):
 
 def get_fingerprint():
     try:
-
         fingerprint_response = requests.get(f'{BASE_URL_HARDWARE}/read-fingerprint')
 
         if fingerprint_response.status_code == 200:
@@ -47,20 +46,20 @@ def get_fingerprint():
             confidence = json_fingerprint_response['data']['confidence']
             msg = json_fingerprint_response['data']['msg']
 
+            print(finger, confidence, msg)
 
             # match found
             # check to see who's finger it is
-
-            # employee_response = requests.get(f'{BASE_URL_MAIN}/fingerprints/find/{finger}')
-            # json_employee_response = employee_response.json()
-
-            # current_employee = json_employee_response['data']['employee']
-
-            # print(current_employee)
-
-            print("successfully authenticated user")
-            open_door(16)
-
+            employee_response = requests.get(f'{BASE_URL_MAIN}/fingerprint/?fingerprint_id={finger}')
+            json_employee_response = employee_response.json()
+            results = json_employee_response['data']['results']
+            if results:
+                current_employee = results[0]
+                print(current_employee)
+                print("successfully authenticated user")
+                open_door(16)
+            else:
+                print(f"No employee found with the given fingerprint id: {finger}")
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
     except Timeout:
