@@ -52,7 +52,6 @@ def get_fingerprint():
             # check to see who's finger it is
             employee_response = requests.get(f'{BASE_URL_MAIN}/fingerprint/?fingerprint_id={finger}')
             json_employee_response = employee_response.json()
-            print(json_employee_response)
             results = json_employee_response['results']
             if results:
                 current_employee = results[0]
