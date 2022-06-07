@@ -58,7 +58,7 @@ def get_fingerprint():
             json_employee_response = employee_response.json()
             results = json_employee_response['results']
             if results:
-                current_employee = results[0]
+                current_employee = results[0]["employee"]
                 first_name = current_employee["first_name"]
                 last_name = current_employee["last_name"]
                 print(f"successfully authenticated user: {first_name} {last_name}")
