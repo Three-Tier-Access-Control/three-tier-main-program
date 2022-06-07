@@ -18,7 +18,7 @@ current_employee = {}
 # open door for 5 seconds
 def open_door(pin_number: int, employee_id: str):
     try:
-        door_on = requests.post(
+        door_access_log = requests.post(
             f'{BASE_URL_MAIN}/access/', json={'employee_id': employee_id, "direction": "in", "status": True})
         door_on = requests.post(
             f'{BASE_URL_HARDWARE}/turn-on', json={'number': pin_number})
