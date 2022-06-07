@@ -19,7 +19,7 @@ current_employee = {}
 def open_door(pin_number: int, employee_id: str):
     try:
         door_access_log = requests.post(
-            f'{BASE_URL_MAIN}/access/', json={'employee_id': employee_id, "direction": "in", "status": True})
+            f'{BASE_URL_MAIN}/access/', json={'employee': employee_id, "direction": "in", "status": True})
         door_on = requests.post(
             f'{BASE_URL_HARDWARE}/turn-on', json={'number': pin_number})
         print("Door open!!!")
@@ -61,6 +61,7 @@ def get_fingerprint():
                 current_employee = results[0]
                 print(current_employee)
                 print("successfully authenticated user")
+                print(current_employee["id"])
                 open_door(pin_number=16, employee_id=current_employee["id"])
             else:
                 print(
