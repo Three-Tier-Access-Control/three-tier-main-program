@@ -16,14 +16,16 @@ current_employee = {}
 
 
 # open door for 5 seconds
-def open_door(number: int):
+def open_door(pin_number: int, employee_id: str):
     try:
         door_on = requests.post(
-            f'{BASE_URL_HARDWARE}/turn-on', json={'number': number})
+            f'{BASE_URL_MAIN}/access', json={'employee_id': employee_id, "direction": "in", "status": True})
+        door_on = requests.post(
+            f'{BASE_URL_HARDWARE}/turn-on', json={'number': pin_number})
         print("Door open!!!")
         time.sleep(5)
         door_off = requests.post(
-            f'{BASE_URL_HARDWARE}/turn-off', json={'number': number})
+            f'{BASE_URL_HARDWARE}/turn-off', json={'number': pin_number})
         print("Door closed.")
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
@@ -38,7 +40,8 @@ def open_door(number: int):
 
 def get_fingerprint():
     try:
-        fingerprint_response = requests.get(f'{BASE_URL_HARDWARE}/read-fingerprint')
+        fingerprint_response = requests.get(
+            f'{BASE_URL_HARDWARE}/read-fingerprint')
 
         if fingerprint_response.status_code == 200:
             json_fingerprint_response = fingerprint_response.json()
@@ -50,16 +53,18 @@ def get_fingerprint():
 
             # match found
             # check to see who's finger it is
-            employee_response = requests.get(f'{BASE_URL_MAIN}/fingerprint/?fingerprint_id={finger}')
+            employee_response = requests.get(
+                f'{BASE_URL_MAIN}/fingerprint/?fingerprint_id={finger}')
             json_employee_response = employee_response.json()
             results = json_employee_response['results']
             if results:
                 current_employee = results[0]
                 print(current_employee)
                 print("successfully authenticated user")
-                open_door(16)
+                open_door(pin_number=16, employee_id=current_employee.id)
             else:
-                print(f"No employee found with the given fingerprint id: {finger}")
+                print(
+                    f"No employee found with the given fingerprint id: {finger}")
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
     except Timeout:
@@ -103,7 +108,7 @@ def read_rfid_card():
 
 def main():
     while True:
-    # read_rfid_card()
+        # read_rfid_card()
         get_fingerprint()
 
     # detect and capture face
