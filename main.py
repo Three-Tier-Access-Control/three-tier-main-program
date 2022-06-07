@@ -61,7 +61,7 @@ def get_fingerprint():
                 current_employee = results[0]
                 print(current_employee)
                 print("successfully authenticated user")
-                open_door(pin_number=16, employee_id=current_employee.id)
+                open_door(pin_number=16, employee_id=current_employee["id"])
             else:
                 print(
                     f"No employee found with the given fingerprint id: {finger}")
