@@ -19,7 +19,7 @@ current_employee = {}
 def open_door(pin_number: int, employee_id: str):
     try:
         door_on = requests.post(
-            f'{BASE_URL_MAIN}/access', json={'employee_id': employee_id, "direction": "in", "status": True})
+            f'{BASE_URL_MAIN}/access/', json={'employee_id': employee_id, "direction": "in", "status": True})
         door_on = requests.post(
             f'{BASE_URL_HARDWARE}/turn-on', json={'number': pin_number})
         print("Door open!!!")
