@@ -111,8 +111,8 @@ def read_rfid_card():
 
 
 def main():
-    while True:
-        read_rfid_card()
+    # while True:
+    read_rfid_card()
         # get_fingerprint()
 
     # detect and capture face
