@@ -1,21 +1,7 @@
-import os
-import time
-from urllib import response
-import requests
-from dotenv import load_dotenv
-from requests.exceptions import HTTPError, Timeout
-
 from helpers.door import open_door
 from helpers.facial import recognise_face
 from helpers.fingerprint import get_fingerprint
 from helpers.rfid import read_rfid_card
-
-
-load_dotenv()
-
-
-BASE_URL_HARDWARE = os.getenv('BASE_URL_HARDWARE')
-BASE_URL_MAIN = os.getenv('BASE_URL_MAIN')
 
 
 def main():
