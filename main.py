@@ -12,7 +12,7 @@ def main():
 
     if id1:
     # if id1 == id2 and id1 == id3:
-        open_door(16, id1) 
+        open_door(36, id1) 
     else:
         print("failed to authenticate user")
 
