@@ -20,9 +20,7 @@ def get_fingerprint():
         finger = json_fingerprint_response['data']['finger']
         confidence = json_fingerprint_response['data']['confidence']
         msg = json_fingerprint_response['data']['msg']
-
         print(finger, confidence, msg)
-
         # match found
         # check to see who's finger it is
         employee_response = requests.get(
