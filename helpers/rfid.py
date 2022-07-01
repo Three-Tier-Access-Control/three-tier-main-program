@@ -25,12 +25,15 @@ def read_rfid_card():
             f'{BASE_URL_MAIN}/rfid/?employee__id={employee_id}')
 
         json_employee_response = employee_response.json()
+        print("json_employee_response")
+
         print(json_employee_response)
 
         results = json_employee_response['results']
         print(results)
 
         if results:
+            print("results[0]")
             print(results[0])
             current_employee = results[0]["employee"]
             first_name = current_employee["first_name"]
