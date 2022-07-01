@@ -15,7 +15,6 @@ def read_rfid_card():
         rfid_response = requests.get(
             f'{BASE_URL_HARDWARE}/read-rfid-card')
         json_rfid_response = rfid_response.json()
-        print(json_rfid_response)
         # check to see who's rfid card it is
         uid = json_rfid_response['data']['uid']
         employee_id = json_rfid_response['data']['employee_id']
@@ -26,6 +25,8 @@ def read_rfid_card():
             f'{BASE_URL_MAIN}/rfid/?employee__id={employee_id}')
 
         json_employee_response = employee_response.json()
+        print(json_employee_response)
+
         results = json_employee_response['results']
         if results:
             current_employee = results[0]["employee"]
