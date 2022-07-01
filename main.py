@@ -6,9 +6,9 @@ from helpers.rfid import read_rfid_card
 
 def main():
     # while True:
-    id1 = read_rfid_card()
-    # id2 = get_fingerprint()
-    # id3 = recognise_face()
+    id1 = get_fingerprint()
+    # id1 = read_rfid_card()
+    # id1 = recognise_face()
 
     if id1:
     # if id1 == id2 and id1 == id3:
