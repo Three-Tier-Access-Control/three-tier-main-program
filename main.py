@@ -7,10 +7,11 @@ from helpers.rfid import read_rfid_card
 def main():
     # while True:
     id1 = read_rfid_card()
-    id2 = get_fingerprint()
-    id3 = recognise_face()
+    # id2 = get_fingerprint()
+    # id3 = recognise_face()
 
-    if id1 == id2 and id1 == id3:
+    if id1:
+    # if id1 == id2 and id1 == id3:
         open_door(16, id1) 
     else:
         print("failed to authenticate user")

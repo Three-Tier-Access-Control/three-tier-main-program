@@ -38,6 +38,7 @@ def get_fingerprint():
         else:
             print(
                 f"No employee found with the given fingerprint id: {finger}")
+            return None
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
     except Timeout:
