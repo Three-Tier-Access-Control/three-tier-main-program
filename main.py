@@ -6,8 +6,8 @@ from helpers.rfid import read_rfid_card
 
 def main():
     # while True:
-    id1 = get_fingerprint()
-    # id1 = read_rfid_card()
+    # id1 = get_fingerprint()
+    id1 = read_rfid_card()
     # id1 = recognise_face()
 
     if id1:
