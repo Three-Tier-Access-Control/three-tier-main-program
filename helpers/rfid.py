@@ -29,7 +29,7 @@ def read_rfid_card():
 
         print(json_employee_response)
 
-        results = json_employee_response['results']
+        results = json_employee_response
         print(results)
 
         if results:
