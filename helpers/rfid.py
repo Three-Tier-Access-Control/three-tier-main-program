@@ -28,7 +28,10 @@ def read_rfid_card():
         print(json_employee_response)
 
         results = json_employee_response['results']
+        print(results)
+
         if results:
+            print(results[0])
             current_employee = results[0]["employee"]
             first_name = current_employee["first_name"]
             last_name = current_employee["last_name"]
