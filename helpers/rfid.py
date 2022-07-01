@@ -19,19 +19,11 @@ def read_rfid_card():
         uid = json_rfid_response['data']['uid']
         employee_id = json_rfid_response['data']['employee_id']
 
-        print(f"Got {employee_id} from card with id {uid}")
-
         employee_response = requests.get(
             f'{BASE_URL_MAIN}/rfid/?employee__id={employee_id}')
 
         json_employee_response = employee_response.json()
-        print("json_employee_response")
-
-        print(json_employee_response)
-
         results = json_employee_response
-        print(results)
-
         if results:
             print("results[0]")
             print(results[0])
