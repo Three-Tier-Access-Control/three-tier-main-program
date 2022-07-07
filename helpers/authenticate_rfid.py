@@ -1,27 +1,27 @@
-import os
+#!/usr/bin/env python
+
+import time
+import RPi.GPIO as GPIO
 import requests
-from dotenv import load_dotenv
-from requests.exceptions import HTTPError, Timeout
+from mfrc522 import SimpleMFRC522
 
-load_dotenv()
+BASE_URL_HARDWARE = "http://threetiersystem.local:5000/api/v1"
+BASE_URL_MAIN = "http://threetiersystem.local:8000/api"
+
+reader = SimpleMFRC522()
 
 
-BASE_URL_HARDWARE = os.getenv('BASE_URL_HARDWARE')
-BASE_URL_MAIN = os.getenv('BASE_URL_MAIN')
-
-# read rfid card
-def read_rfid_card():
+def authenticate_rfid():
     try:
-        rfid_response = requests.get(
-            f'{BASE_URL_HARDWARE}/read-rfid-card')
-        json_rfid_response = rfid_response.json()
-        # check to see who's rfid card it is
-        uid = json_rfid_response['data']['uid']
-        employee_id = json_rfid_response['data']['employee_id']
-
+        print("----------------")
+        print("Authenticating card...")
+        print("----------------")
+        requests.post(
+            f'{BASE_URL_HARDWARE}/write-to-lcd', json={'text': "Place card..."})
+        id, text = reader.read()
+        employee_id = text.strip()
         employee_response = requests.get(
             f'{BASE_URL_MAIN}/rfid/?employee__id={employee_id}')
-
         results = employee_response.json()
         if results:
             current_employee = results[0]["employee"]
@@ -34,10 +34,8 @@ def read_rfid_card():
             print(
                 f"No employee found with the given id: {employee_id}")
             return None
-    except HTTPError as http_err:
-        print(f'HTTP error occurred: {http_err}')
-    except Timeout:
-        print('The request timed out')
     except Exception as err:
         print(f'Other error occurred: {err}')
+    finally:
+        GPIO.cleanup()
 

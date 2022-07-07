@@ -1,18 +1,21 @@
+from helpers.authenticate_face_id import authenticate_face_id
+from helpers.authenticate_fingerprint import authenticate_fingerprint
+from helpers.authenticate_rfid import authenticate_rfid
 from helpers.door import open_door
-from helpers.facial import recognise_face
-from helpers.fingerprint import get_fingerprint
-from helpers.rfid import read_rfid_card
 
 
 def main():
     # while True:
-    id1 = get_fingerprint()
-    # id1 = read_rfid_card()
-    # id1 = recognise_face()
+    id1 = authenticate_fingerprint()
+    id2 = authenticate_rfid()
+    id3 = authenticate_face_id()
 
     if id1:
-    # if id1 == id2 and id1 == id3:
         open_door(36, id1) 
+    elif id2:
+        open_door(36, id2) 
+    elif id3:
+        open_door(36, id3) 
     else:
         print("failed to authenticate user")
 

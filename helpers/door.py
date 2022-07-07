@@ -13,7 +13,6 @@ BASE_URL_MAIN = os.getenv('BASE_URL_MAIN')
 
 # open door for 5 seconds
 
-
 def open_door(pin_number: int, employee_id: str):
     try:
         requests.post(
@@ -31,9 +30,9 @@ def open_door(pin_number: int, employee_id: str):
             f'{BASE_URL_MAIN}/access/', json={'employee': employee_id, "direction": "in", "status": True})
         requests.post(
             f'{BASE_URL_HARDWARE}/write-to-lcd', json={'text': ""})
-    except HTTPError as http_err:
+    except requests.HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
-    except Timeout:
+    except requests.Timeout:
         print('The request timed out')
     except Exception as err:
         print(f'Other error occurred: {err}')
